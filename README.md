@@ -11,10 +11,12 @@ OVE - Bundle Symfony Manuel de Procedures
 ## Installation
 
 * Il faut commencer par installer Symfony et le module d'authentification comme expliqué ici : 
+
     https://github.com/tonygalmiche/AuthentificationBundle
 
 
 Ajout des dépendances : 
+
     vim composer.json
 
     "require": {
@@ -25,10 +27,12 @@ Ajout des dépendances :
         "ove/procedures-bundle": "dev-master"
 
 Installation : 
+
     composer.phar update
 
 
 Activation des nouveaux modules : 
+
     vim app/AppKernel.php
         $bundles = array(
            ...
@@ -37,6 +41,7 @@ Activation des nouveaux modules :
            new OVE\ProceduresBundle\OVEProceduresBundle(),
 
 Mise en place de la configuration : 
+
     cp vendor/ove/procedures-bundle/OVE/ProceduresBundle/Resources/doc/ove_procedures.yml app/config/
     vim app/config/config.yml
     imports:
@@ -44,20 +49,24 @@ Mise en place de la configuration :
         - { resource: ove_procedures.yml }
 
 Mise à jour de la base de données : 
+
     php app/console doctrine:schema:update --dump-sql
     php app/console doctrine:schema:update --force
 
 
 Mise en place du routage : 
+
     vim app/config/routing.yml 
     ove_procedures:
         resource: "@OVEProceduresBundle/Resources/config/routing.yml"
         prefix:   /
 
 Vérification du routage : 
+
     php app/console router:debug
 
 Création des répertoire d'upload : 
+
     mkdir web/uploads
     mkdir web/uploads/manuel
     chown -R tony.galmiche:www-data web/uploads
@@ -65,6 +74,7 @@ Création des répertoire d'upload :
 
 
 Vider le cache
+
     app/console cache:clear
 
 
