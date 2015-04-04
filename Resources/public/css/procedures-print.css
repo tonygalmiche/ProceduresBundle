@@ -1,0 +1,76 @@
+@page  
+{ 
+  /*size:8.27in 11.69in; */
+  size: auto;   /* auto is the initial value */ 
+
+  /* this affects the margin in the printer settings */ 
+  margin: 10mm 10mm 10mm 10mm;
+  margin-bottom: 25mm;
+
+
+
+
+
+} 
+
+
+
+
+body {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+
+    font-family: "Arial", Gadget, sans-serif
+
+
+
+}
+
+
+
+img {
+  max-height:24cm;
+  background-color:transparent;
+}
+
+
+h2{
+  background-color:transparent;
+}
+
+#procedure h2{
+  background-color:transparent;
+}
+
+
+.filigrane{
+  writing-mode:tb-rl;
+  -webkit-transform:rotate(-60deg);
+  -moz-transform:rotate(-60deg);
+  -o-transform: rotate(-60deg);
+
+  text-align: center;
+  border: 6px solid; /* Gainsboro;*/
+  color: Gainsboro;
+  font-size: 35pt;
+
+  display:block;
+  position:fixed;
+  /*margin-top:10cm;
+  margin-left:1cm;*/
+  z-index:-1;
+}
+
+
+
+
+
+.no-print, .no-print * {
+    display: none !important;
+}
+
+
+
+
+
+

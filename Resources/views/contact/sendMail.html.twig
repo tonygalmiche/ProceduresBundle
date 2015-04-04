@@ -1,0 +1,37 @@
+{% extends "OVEProceduresBundle:Default:base.html.twig" %}
+
+
+{% block stylesheets %}
+  {{ parent()}}
+  <link href="{{ asset('bundles/oveprocedures/select2/select2.css') }}" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{ asset('bundles/oveprocedures/vakata-jstree/default/style.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{ asset('bundles/oveprocedures/handsontable/jquery.handsontable.full.min.css')  }}" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{ asset('bundles/oveprocedures/css/procedures.css')  }}" rel="stylesheet" type="text/css" media="screen" />
+{% endblock %}
+
+
+{% block content -%}
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      <div class="col-md-6" >
+        <h1>Formulaire de contact</h1>
+
+        <p class="bg-success">Mail envoyé avec succès</p>
+
+        <p>Emetteur : {{from}}</p>
+        <p>Destinataires : {{to}}</p>
+        <p>Sujet : <b>{{sujet}}<b></p>
+        <p class="bg-info">{{contenu | raw }}</p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+{% endblock %}
+
+

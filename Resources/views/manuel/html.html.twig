@@ -1,0 +1,71 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}OVE{% endblock %}
+
+{% block stylesheets %}
+  {{ parent()}}
+
+  <link href="{{ asset('bundles/oveauthentification/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{ asset('bundles/oveauthentification/css/ove-base.css') }}"                rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{ asset('bundles/oveauthentification/jquery-ui/css/smoothness/jquery-ui-1.10.4.custom.min.css') }}"  rel="stylesheet" type="text/css" media="screen" />
+
+  <link href="{{ asset('bundles/oveprocedures/css/procedures.css')  }}"       rel="stylesheet" type="text/css" media="all" />
+  <link href="{{ asset('bundles/oveprocedures/css/procedures-print.css')  }}" rel="stylesheet" type="text/css" media="print" />
+
+
+
+
+
+{% endblock %}
+
+{% block body %}
+
+
+  <div id="content" class="container">
+
+
+
+    <div class="row">
+
+
+        {% for p in procedures %}
+          {% set type=p.type %}
+          {% set etat=p.etat %}
+          {% set entity=p.entity %}
+          {% set etat_color=p.etat_color %}
+          {% set filigrane=p.filigrane %}
+          {% set filigrane_couleur=p.filigrane_couleur %}
+          {% set filigrane_top=p.filigrane_top %}
+          {% set filigrane_left=p.filigrane_left %}
+          {% set pieces_jointes=p.pieces_jointes %}
+          {% set modeles=p.modeles %}
+          {% set liens_html=p.liens_html %}
+
+          {% set redacteurs=p.redacteurs %}
+          {% set lecteurs=p.lecteurs %}
+          {% set verificateurs=p.verificateurs %}
+          {% set approbateurs=p.approbateurs %}
+
+          {% set diagramme=p.diagramme %}
+
+          {% set diagramme_width=p.diagramme_width %}
+          {% set diagramme_height=p.diagramme_height %}
+
+          {% set url=p.url %}
+
+
+          {% include "OVEProceduresBundle:procedures:show-procedure.html.twig" %}
+
+          <p style="page-break-before: always">
+
+
+        {% endfor %}
+
+
+
+
+
+    </div>
+  </div>
+
+{% endblock %}

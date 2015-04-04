@@ -1,0 +1,89 @@
+{% extends "OVEProceduresBundle:Default:base.html.twig" %}
+
+
+{% block stylesheets %}
+  {{ parent()}}
+  <link href="{{ asset('bundles/oveprocedures/select2/select2.css') }}" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{ asset('bundles/oveprocedures/vakata-jstree/default/style.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
+{% endblock %}
+
+
+
+{% block content -%}
+
+
+  <div id="container" class="container">
+    <h1>Gestion des vérificateurs par domaine</h1>
+
+    <div class="row">
+      <div class="col-sm-6 text-left">
+        <button id="developper">Développer</button>
+        <button id="reduire">Réduire</button></p>
+        <input id="recherche" type="text"  placeholder="Recherche"></p>
+        <div id="jstree"></div></p>
+      </div>
+
+
+      <div class="col-sm-6 text-left" id="node_detail" style="display:none">
+        <form class="form" role="form" >
+          <input id="node_id" style="display:none">
+          <div class="form-group">
+            <label class="control-label nowrap" style="text-align:left">Vérificateur : </label>
+            <input type="text" id="node_verificateur" style="width:100%">
+
+
+          </div>
+        </form>
+      </div>
+
+
+
+    </div>
+  </div>
+
+
+
+
+
+
+    <!--
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Termeid</th>
+                <th>Responsable</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('domaines_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.termeid }}</td>
+                <td>{{ entity.responsable }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    -->
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent()}}
+
+  <script src="{{ asset('bundles/oveprocedures/select2/select2.min.js') }}"></script>
+  <script src="{{ asset('bundles/oveprocedures/select2/select2_locale_fr.js') }}"></script>
+
+
+  <script>
+    //var json = $.parseJSON('{{ json | raw }}');
+    var json = {{ json | raw }};
+  </script>
+
+
+
+  <script src="{{ asset('bundles/oveprocedures/vakata-jstree/jstree.min.js') }}"></script>
+  <script src="{{ asset('bundles/oveprocedures/js/thesaurus.js') }}"></script>
+{% endblock %}
+

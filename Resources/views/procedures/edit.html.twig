@@ -1,0 +1,343 @@
+{% extends "OVEAuthentificationBundle:Default:ove-base.html.twig" %}
+
+{% block stylesheets %}
+  {{ parent()}}
+  <link href="{{ asset('bundles/oveprocedures/select2/select2.css') }}" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{ asset('bundles/oveprocedures/vakata-jstree/default/style.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{ asset('bundles/oveprocedures/handsontable/jquery.handsontable.full.min.css')  }}" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{ asset('bundles/oveprocedures/css/procedures.css')  }}" rel="stylesheet" type="text/css" media="screen" />
+{% endblock %}
+
+
+{% block content -%}
+
+<!-- Template de file-upload -->
+{% include "OVEProceduresBundle:procedures:file-upload-diagramme.html.twig" %}
+{% include "OVEProceduresBundle:procedures:file-upload-pieces-jointes.html.twig" %}
+{% include "OVEProceduresBundle:procedures:file-upload-modeles.html.twig" %}
+
+
+
+
+
+<!-- Formulaire de suppression avec le token CSRF -->
+<div class="col-sm-2 text-right" style="float: right">
+
+
+
+
+
+  {% if entity.etat=='redaction' %}
+    <a class="btn btn-sm btn-danger" href="{{ path('procedures_etat', { etat: 'poubelle', id: entity.id }) }}" onclick="return confirm ('Voulez-vous vraiment mettre à la corbeille cette procédure ?')">Corbeille</a>
+  {% endif %}
+
+</div>
+
+
+<div class="col-sm-2 text-right" style="float: right">
+
+</div>
+
+
+
+
+
+<!-- Formulaire principal -->
+
+<form class="edit-form" action="{{ path('procedures_update', { id: entity.id }) }}" method="post" {{ form_enctype(form) }}>
+  <input type="hidden" name="_method" value="PUT" />
+  {{ form_widget(form._token) }}
+
+  <!-- Titre + boutons 'Sauvegarder' et 'Annuller' + barre de progression -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 text-left" >
+        <button class="btn btn-primary" type="submit">Sauvegarder</button>
+        <a class="btn btn-default" title="Page précédente sans sauvegarder" href="#" onclick="window.history.back();return false;">Annuler</a>
+      </div>
+      <div class="col-md-5 text-left" >
+        <h1>Modification Procédure '{{entity.fiche}}'</h1>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+
+
+        <!-- Champs masqués pour conserver les valeur -->
+        <div style="display:none">
+          {{ form_widget(form.etat) }} {{ form_widget(form.version) }}
+        </div>
+
+
+
+        <div class="form-group col-lg-2">
+          <label class="control-label nowrap" style="text-align:left">Type : </label>
+          {{ form_widget(form.type, {'attr': {'class': 'form-control text-left'}}) }}
+        </div>
+
+
+
+        <div class="form-group col-lg-2">
+          <label class="control-label nowrap" style="text-align:left">N° Fiche : </label>
+          {{ form_widget(form.fiche, {'attr': {'class': 'form-control text-center'}}) }}
+        </div>
+
+        <div class="form-group col-lg-8">
+          <label class="control-label nowrap" style="text-align:left">Nom Fiche : </label>
+          {{ form_widget(form.nom, {'attr': {'class': 'form-control text-left'}}) }}
+        </div>
+
+        <div class="form-group col-lg-6">
+          <label class="control-label nowrap" style="text-align:left">Domaine : 
+          <a id="select_domaines" href="#" title="Sélection des domaines"> <span class="glyphicon glyphicon-list pull-right" style="color:black"></span>&nbsp;</a></label>
+          {{ form_widget(form.domaineid, {'attr': {'style': 'width:100%'}}) }}
+        </div>
+        <!-- Boite de dialogue de sélection des domaines -->
+        <div id="dialog-form" title="Sélection des domaines">
+          <!--
+          <button id="developper">Développer</button>
+          <button id="reduire">Réduire</button></p>
+          <input id="recherche" type="text"  placeholder="Recherche"></p>
+          <input id="select_domaines2"      type="text"></p>
+          <input id="select_domaines2_json" type="text"></p>
+          -->
+          <div id="jstree"></div></p>
+          <!--
+          <form>
+            <fieldset>
+              <label for="name">Name</label>
+              <input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
+            </fieldset>
+          </form>
+          -->
+        </div>
+
+
+
+        <div class="form-group col-lg-6">
+          <label class="control-label nowrap" style="text-align:left">Mots clés : </label>
+
+          {{ form_widget(form.mots_clesid, {'attr': {'style': 'width:100%'}}) }}
+
+        </div>
+
+
+
+
+        <div class="form-group col-lg-12">
+          <h2>OBJET</h2>
+          <!--<label class="control-label nowrap text-left">Objet : </label>-->
+          {{ form_widget(form.objet) }}
+        </div>
+
+        <div class="form-group col-lg-12">
+          <h2>TERMINOLOGIE</h2>
+          <!--<label class="control-label nowrap text-left">Terminologie : </label>-->
+          {{ form_widget(form.terminologie) }}
+        </div>
+
+
+        <div class="form-group col-lg-12">
+          <h2>INTERVENANTS ET SERVICES CONCERNÉS</h2>
+          <div id="handsontable_intervenants"></div>
+          <div style="display:none">{{ form_widget(form.intervenants, {'attr': {'style': 'width:100%'}}) }}</div>
+        </div></p>
+
+
+
+        <div class="form-group col-lg-12" id="diagramme">
+          <h2>LOGIGRAMME</h2>
+          <!--<label class="control-label nowrap text-left">Logigramme : </label>-->
+          <div class="file-uploader1" data-upload-template-id="template-upload-1" data-download-template-id="template-download-1"></div>
+        </div>
+
+
+
+
+        <div class="form-group col-lg-12">
+          <h2>DESCRIPTION DES TACHES</h2>
+          <!--
+          <label class="control-label nowrap" style="text-align:left">Trame de la description</label>
+          <input type="text" id="trame" name="trame" style="width:100%">
+          <label class="control-label nowrap" style="text-align:left">Description</label>
+          -->
+          <!--<label class="control-label nowrap text-left">Description : </label>-->
+          {{ form_widget(form.description) }}
+        </div>
+
+
+
+
+        <div class="form-group col-lg-12">
+          <h2>DOCUMENTS UTILISÉS</h2>
+          <h2>Documentations</h2>
+          <p>Fichiers PDF uniquement</p>
+          <div class="file-uploader2"></div>
+
+          <h2>Modèles</h2>
+          <p>Fichiers PDF, Office et OpenOffice uniquement</p>
+          <div class="file-uploader3"></div>
+
+        </div>
+
+        <div class="form-group col-lg-12">
+          <label class="control-label nowrap text-left">Liens HTML (un lien par ligne) : </label>
+          {{ form_widget(form.liens_html, {'attr': {'style': 'width:100%'}}) }}
+        </div></p>
+
+
+
+
+
+
+
+
+
+        <div class="form-group col-lg-8">
+          <label class="control-label nowrap" style="text-align:left">Objet de la mise à jour : </label>
+          {{ form_widget(form.objet_modification, {'attr': {'class': 'form-control text-left'}}) }}
+        </div>
+
+        <!-- Cela empèche l'enrgistement de la procédure -->
+        <div class="form-group col-lg-4">
+          <label class="control-label nowrap" style="text-align:left">Date d'application : </label>
+          {{ form_widget(form.date_application) }}
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class="form-group col-lg-6">
+          <label class="control-label nowrap" style="text-align:left">Rédacteurs : </label>
+          {{ form_widget(form.redacteursid, {'attr': {'style': 'width:100%'}}) }}
+        </div>
+
+
+        <div class="form-group col-lg-6">
+          <label class="control-label nowrap" style="text-align:left">Lecteurs (avec accusé de réception) : </label>
+          {{ form_widget(form.lecteursid, {'attr': {'style': 'width:100%'}}) }}
+        </div>
+
+        <div class="form-group col-lg-6">
+          <label class="control-label nowrap" style="text-align:left">Ajout de groupes de rédacteurs</label>
+          <input type="text" id="ajout_redacteurs" name="ajout_redacteurs" style="width:100%">
+        </div>
+
+        <div class="form-group col-lg-6">
+          <label class="control-label nowrap" style="text-align:left">Ajout de groupes de lecteurs</label>
+          <input type="text" id="ajout_lecteurs" name="ajout_lecteurs" style="width:100%">
+        </div>
+
+
+
+
+      </div> 
+    </div> 
+  </div> 
+
+
+
+
+
+</form>
+
+
+{% if droits.supprimer == true %}
+<form action="{{ path('procedures_delete', { 'id': entity.id }) }}" method="post" >
+  <input type="hidden" value="DELETE" name="_method">
+  <button id="form_submit" name="form[submit]" type="submit" class="btn btn-danger" onclick="return confirm ('Voulez-vous vraiment supprimer cette procédure ?')">Supprimer définitivement</button>
+  {{ form_widget(delete_form._token) }}
+</form>
+{% endif %}
+
+
+
+{% endblock %}
+
+
+
+
+{% block javascripts %}
+  {{ parent()}}
+  <script src="{{ asset('bundles/oveprocedures/js/underscore-min.js') }}"></script>
+  <script src="{{ asset('bundles/punkavefileuploader/js/jquery.fileupload.js') }}"></script>
+  <script src="{{ asset('bundles/punkavefileuploader/js/jquery.iframe-transport.js') }}"></script>
+  <script src="{{ asset('bundles/oveprocedures/js/FileUploader.js') }}"></script>
+
+  <script src="{{ asset('bundles/oveprocedures/select2/select2.min.js') }}"></script>
+  <script src="{{ asset('bundles/oveprocedures/select2/select2_locale_fr.js') }}"></script>
+
+  <script src="{{ asset('bundles/oveprocedures/vakata-jstree/jstree.min.js') }}"></script>
+
+  <script src="{{ asset('bundles/oveprocedures/handsontable/jquery.handsontable.full.min.js') }}"></script>
+
+  <script src="{{ asset('bundles/oveprocedures/js/procedures.js') }}"></script>
+
+  <script>
+    var domaine       = {{ domaine       | raw }};
+    var domaines_json = {{ domaines_json | raw }};
+    var mots_cles     = {{ mots_cles     | raw }};
+    var redacteurs    = {{ redacteurs    | raw }};
+    var lecteurs      = {{ lecteurs      | raw }};
+
+    //console.log(domaines_json);
+
+
+    var form_id="";
+    {% if p.id is defined %}
+      form_id="{{ form.vars.id }}";
+    {% endif %}
+
+    $(function() {
+
+        //** Diagramme **********************************************
+        new PunkAveFileUploader({
+            'uploadUrl': {{ path('upload_diagramme', { editId: editId1 }) | json_encode | raw }},
+            'viewUrl'  : '/uploads/tmp/attachments/{{editId1}}',
+            'el': '.file-uploader1',
+            'existingFiles': {{ punkave_get_files('/attachments/' ~ editId1) | json_encode | raw }},
+            'delaySubmitWhileUploading': '.edit-form',
+            'uploaderTemplate': '#file-upload-diagramme',
+            'fileTemplate': '#file-upload-diagramme-file',
+        });
+
+        //** Documentation *****************************************
+        new PunkAveFileUploader({
+            'uploadUrl': {{ path('upload_pieces_jointes', { editId: editId2 }) | json_encode | raw }},
+            'viewUrl'  : '/uploads/tmp/attachments/{{editId2}}',
+            'el': '.file-uploader2',
+            'existingFiles': {{ punkave_get_files('/attachments/' ~ editId2) | json_encode | raw }},
+            'delaySubmitWhileUploading': '.edit-form',
+            'uploaderTemplate': '#file-upload-pieces-jointes',
+            'fileTemplate': '#file-upload-pieces-jointes-file',
+        });
+
+        //** Modèles *****************************************
+        new PunkAveFileUploader({
+            'uploadUrl': {{ path('upload_modeles', { editId: editId3 }) | json_encode | raw }},
+            'viewUrl'  : '/uploads/tmp/attachments/{{editId3}}',
+            'el': '.file-uploader3',
+            'existingFiles': {{ punkave_get_files('/attachments/' ~ editId3) | json_encode | raw }},
+            'delaySubmitWhileUploading': '.edit-form',
+            'uploaderTemplate': '#file-upload-modeles',
+            'fileTemplate': '#file-upload-modeles-file',
+        });
+
+
+
+    });
+</script>
+{% endblock %}

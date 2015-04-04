@@ -1,0 +1,67 @@
+
+
+
+
+
+ove_procedures_default:
+  resource: "@OVEProceduresBundle/Controller/DefaultController.php"
+  type:     annotation
+  prefix:   /
+
+
+
+
+ove_procedures_procedures:
+  resource: "@OVEProceduresBundle/Controller/proceduresController.php"
+  type:     annotation
+  prefix:   /
+
+
+ove_procedures_ajax:
+  resource: "@OVEProceduresBundle/Controller/ajaxController.php"
+  type:     annotation
+  prefix:   /
+
+
+
+ove_procedures_groupes:
+  resource: "@OVEProceduresBundle/Controller/groupesController.php"
+  type:     annotation
+  prefix:   /parametrage
+
+
+
+ove_procedures_trames:
+  resource: "@OVEProceduresBundle/Controller/tramesController.php"
+  type:     annotation
+  prefix:   /administration
+
+ove_procedures_statistiques:
+  resource: "@OVEProceduresBundle/Controller/statistiquesController.php"
+  type:     annotation
+  prefix:   /administration
+
+
+ove_procedures_manuel:
+  resource: "@OVEProceduresBundle/Controller/manuelController.php"
+  type:     annotation
+  prefix:   /
+
+ove_procedures_parametres:
+  resource: "@OVEProceduresBundle/Controller/parametresController.php"
+  type:     annotation
+  prefix:   /administration
+
+
+ove_procedures_domaines:
+  resource: "@OVEProceduresBundle/Controller/domainesController.php"
+  type:     annotation
+  prefix:   /administration
+
+
+ove_procedures_contact:
+  resource: "@OVEProceduresBundle/Controller/contactController.php"
+  type:     annotation
+  prefix:   /
+
+

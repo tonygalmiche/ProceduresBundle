@@ -1,0 +1,7 @@
+parameters:
+#    ove_procedures.example.class: OVE\ProceduresBundle\Example
+
+services:
+#    ove_procedures.example:
+#        class: %ove_procedures.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

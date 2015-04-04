@@ -1,0 +1,47 @@
+{% spaceless %}
+
+<script type="text/template" id="file-upload-diagramme">
+  <div class="container-fluid" data-dropzone="1">
+    <div class="row">
+      <div class="col-md-4">
+        {# No name attribute please, that would cause it to submit with a regular form #}
+        <span class="btn btn-success fileinput-button">
+            <i class="glyphicon glyphicon-plus"></i>
+            <span>Ajouter le logigramme...</span>
+            <input type="file"  data-files="1" multiple >
+        </span>
+      </div>
+      <div class="col-md-8">
+        <div class="progress" data-spinner="1" style="display: none">
+          <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+            <span class="sr-only">0% Complete</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    </p>
+    <div class="row"  data-thumbnails="1" style="">
+      {# We populate the list via an API call #}
+    </div>
+  </div>
+</script>
+
+{# parameters to underscore template: name, thumbnail_url, original_url #}
+<script type="text/template" id="file-upload-diagramme-file">
+    <div data-name="<%- name %>"  data-type="<%- type %>"    data-size="<%- size %>"    class="col-md-12" style="padding-left: 0px;padding-right: 5px"  >
+    <div class="thumbnail" style="padding: 0px; margin-top: 0px; margin-bottom: 5px;">
+        {# ACHTUNG: data-action="delete" matters to javascript #}
+
+        <%
+          if ('undefined' == typeof small_url) small_url="";
+        %>
+        <a title="Supprimer ce fichier" data-action="delete" href="#delete"><span class="glyphicon glyphicon-remove"></span></a>&nbsp;
+        <a title="Télécharger <%- name %>" target="download" href="<%- url %>">
+          <img src="<%- small_url %>" class="thumbnail-image" alt="<%- name %>" />
+        </a>
+    </div>
+    </div>
+</script>
+
+
+{% endspaceless %}

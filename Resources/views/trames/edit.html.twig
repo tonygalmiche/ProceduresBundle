@@ -1,0 +1,53 @@
+{% extends "OVEProceduresBundle:Default:base.html.twig" %}
+
+{% block content -%}
+
+<!-- Formulaire de suppression avec le token CSRF -->
+<div class="col-sm-2 text-right" style="float: right">
+  <form action="{{ path('trames_delete', { 'id': entity.id }) }}" method="post" >
+    <input type="hidden" value="DELETE" name="_method">
+    <button id="form_submit" name="form[submit]" type="submit" class="btn btn-danger">Supprimer</button>
+    {{ form_widget(delete_form._token) }}
+  </form>
+</div>
+
+
+<!-- Formulaire principal -->
+
+<form class="edit-form" action="{{ path('trames_update', { id: entity.id }) }}" method="post" {{ form_enctype(form) }}>
+  <input type="hidden" name="_method" value="PUT" />
+  {{ form_widget(form._token) }}
+
+  <!-- Titre + boutons 'Sauvegarder' et 'Annuller' + barre de progression -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 text-left" >
+        <button class="btn btn-primary" type="submit">Sauvegarder</button>
+        <a class="btn btn-default" title="Page précédente sans sauvegarder" href="#" onclick="window.history.back();return false;">Annuler</a>
+      </div>
+      <div class="col-md-5 text-left" >
+        <h1>{{entity.nom}}</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="form-group col-lg-6">
+          <label class="control-label nowrap" style="text-align:left">Nom : </label>
+          {{ form_widget(form.nom, {'attr': {'class': 'form-control text-left'}}) }}
+        </div>
+
+        <div class="form-group col-lg-12">
+          <label class="control-label nowrap" style="text-align:left">Contenu : </label>
+          {{ form_widget(form.contenu, {'attr': {'style': 'width:100%'}}) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+{% endblock %}

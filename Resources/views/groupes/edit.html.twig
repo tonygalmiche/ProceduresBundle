@@ -1,0 +1,10 @@
+{% extends "OVEProceduresBundle:Default:base.html.twig" %}
+
+{% block content -%}
+  <h1>Modification groupe</h1>
+
+  {{ form(edit_form) }}</p>
+  {{ form(delete_form) }}</p>
+  <a type="button" class="btn btn-sm btn-default" href="{{ path('groupes') }}"><span class="glyphicon glyphicon-plus"></span> Retour à la liste</a>
+
+{% endblock %}

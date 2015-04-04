@@ -1,0 +1,46 @@
+{% extends "OVEAuthentificationBundle:Default:ove-base.html.twig" %}
+
+{% block stylesheets %}
+  {{ parent()}}
+  <link href="{{ asset('bundles/oveprocedures/css/procedures.css')  }}" rel="stylesheet" type="text/css" media="screen" />
+{% endblock %}
+
+{% block content -%}
+
+  <div class="container-fluid">
+    <h1>Consultation des statistiques</h1>
+    <form class="form-inline" role="form">
+      <div class="form-group">
+        <input class="form-control" name="idprocedure"   placeholder="Id Procédure"      value="{{f.idprocedure}}">
+      </div>
+      <div class="form-group">
+        <input class="form-control" name="login"    placeholder="Login"        value="{{f.login}}">
+      </div>
+      <button type="submit" class="btn btn-default">OK</button>
+    </form>
+  </div></p>
+
+
+  <table class="records_list" style="width:50%">
+      <thead>
+          <tr>
+              <th style="width:25%">Id</th>
+              <th style="width:25%">Id Procédure</th>
+              <th style="width:25%">Date</th>
+              <th style="width:25%">Login</th>
+          </tr>
+      </thead>
+      <tbody>
+      {% for entity in entities %}
+          <tr>
+              <td style="text-align:center">{{ entity.id }}</a></td>
+              <td style="text-align:center"><a href="{{ path('procedures_show', { 'id': entity.idprocedure }) }}">{{ entity.idprocedure }}</a></td>
+              <td style="text-align:center">{% if entity.date %}{{ entity.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+              <td style="text-align:center">{{ entity.login }}</td>
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+
+
+{% endblock %}

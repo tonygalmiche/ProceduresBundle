@@ -1,0 +1,29 @@
+{% extends "OVEProceduresBundle:Default:base.html.twig" %}
+
+{% block content -%}
+    <h1>Groupe</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ entity.nom }}</td>
+            </tr>
+            <tr>
+                <th>Membres</th>
+                <td>{{ entity.membres }}</td>
+            </tr>
+            <tr>
+                <th>Createur</th>
+                <td>{{ entity.createur }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {{ form(delete_form) }}</p>
+    <a type="button" class="btn btn-sm btn-default" href="{{ path('groupes_edit', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-pencil"></span> Modification</a></p>
+    <a type="button" class="btn btn-sm btn-default" href="{{ path('groupes') }}"><span class="glyphicon glyphicon-plus"></span> Retour à la liste</a></p>
+{% endblock %}

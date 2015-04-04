@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{title}}</title>
+  <!--<subtitle>Les dernières procédures validées</subtitle>-->
+  <link href="" rel="self"/>
+  <link href=""/>
+  <updated></updated>
+  <author><name>Fondation OVE</name></author>
+  <id>1</id>
+
+  {% for entity in entities %}
+    <entry>
+      <title>{{ entity.fiche }}</title>
+      <link href="{{ entity.url }}" />
+      <id>{{ entity.id }}</id>
+      <updated></updated>
+      <summary>{{ entity.type }} {{ entity.fiche }} / {{ entity.version }}</summary>
+      <author><name>OVE</name></author>
+    </entry>
+  {% endfor %}
+</feed>

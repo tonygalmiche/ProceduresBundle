@@ -1,0 +1,56 @@
+{% extends "OVEAuthentificationBundle:Default:ove-base.html.twig" %}
+
+{% block stylesheets %}
+  {{ parent()}}
+  <link href="{{ asset('bundles/oveprocedures/css/procedures.css')  }}" rel="stylesheet" type="text/css" media="screen" />
+{% endblock %}
+
+
+
+
+
+{% block navbar %}
+  <div class="navbar navbar-inverse navbar-fixed-top no-print" role="navigation" {% if demo is defined %} style="background-color:red" {% endif %}>
+    <div class="container">
+      <div class="navbar-header" >
+        {% if demo is defined %}
+            <a class="navbar-brand" href="#">BASE de DEMO</a>
+        {% endif %}
+        <ul class="nav navbar-nav">
+          <li><a href="{{ path('accueil') }}"> <span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+
+          <li><a href="{{ path('presentation') }}"> <span class="glyphicon glyphicon-info-sign"></span> Présentation</a></li>
+
+          {% if is_granted('ROLE_PARAM') or is_granted('ROLE_DIRECTEUR') or is_granted('ROLE_DELEGATION') or is_granted('ROLE_ADMIN')  %}
+            <li><a href="{{ path('parametrage') }}"><span class="glyphicon glyphicon-cog"></span> Paramétrage</a></li>
+          {% endif %}
+          {% if is_granted('ROLE_ADMIN') %}
+            <li><a href="{{ path('administration') }}"><span class="glyphicon glyphicon-th"></span> Administration</a></li>
+          {% endif %}
+
+
+          <li><a href="{{ path('contact') }}"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
+
+
+        </ul>
+      </div>
+
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          {% if app.user.email is not defined %}
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{ app.user.username }}
+          {% else %}
+            <li title="{{ app.user.username }} / {{ app.user.email }} {% if directeur_login is defined %} / Directeur={{directeur_login}} {% endif %}">
+              <a href="#"><span class="glyphicon glyphicon-user"></span> {{ app.user.name }}</a>
+            </li>
+          {% endif %}
+          <li><a href="{{ path('logout') }}"> <span class="glyphicon glyphicon-off" ></span> Déconnexion</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+
+

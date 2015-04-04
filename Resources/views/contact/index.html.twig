@@ -1,0 +1,96 @@
+{% extends "OVEProceduresBundle:Default:base.html.twig" %}
+
+
+{% block stylesheets %}
+  {{ parent()}}
+  <link href="{{ asset('bundles/oveprocedures/select2/select2.css') }}" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{ asset('bundles/oveprocedures/vakata-jstree/default/style.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{ asset('bundles/oveprocedures/handsontable/jquery.handsontable.full.min.css')  }}" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{ asset('bundles/oveprocedures/css/procedures.css')  }}" rel="stylesheet" type="text/css" media="screen" />
+{% endblock %}
+
+
+
+
+
+
+{% block content -%}
+
+
+  <div class="container-fluid">
+
+
+    <div class="row">
+
+      <div class="col-md-12 text-left" >
+        <h1>Formulaire de contact</h1>
+      </div>
+
+
+
+      <!-- Formulaire principal -->
+
+      <form class="edit-form" action="{{ path('contact_send_mail') }}" method="post" >
+        <input type="hidden" name="_method" value="PUT" />
+
+        <div class="col-md-6" >
+
+          <div class="form-group">
+            <label class="control-label nowrap" style="text-align:left">Domaines (Destinataires) : 
+            <a id="select_domaines" href="#" title="Sélection des domaines"> <span class="glyphicon glyphicon-list pull-right" style="color:black"></span>&nbsp;</a></label>
+            <input style="width:100%" id="domaines" name="domaines">
+          </div>
+
+          <!-- Boite de dialogue de sélection des domaines -->
+          <div id="dialog-form" title="Sélection des domaines">
+            <div id="jstree"></div></p>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleInputPassword1">Sujet : </label>
+            <input class="form-control" name="sujet" placeholder="Sujet">
+          </div>
+
+          <div class="form-group">
+            <label for="exampleInputPassword1">Contenu : </label>
+            <textarea class="form-control" name="contenu" ></textarea>
+          </div>
+        </div>
+
+
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12 text-left" >
+                <a class="btn btn-default" title="Page précédente sans sauvegarder" href="#" onclick="window.history.back();return false;">Annuler</a>
+                <button class="btn btn-primary" type="submit">Envoyer le mail</button>
+
+              </div>
+            </div>
+          </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+  {{ parent()}}
+  <script src="{{ asset('bundles/oveprocedures/js/underscore-min.js') }}"></script>
+  <script src="{{ asset('bundles/oveprocedures/select2/select2.min.js') }}"></script>
+  <script src="{{ asset('bundles/oveprocedures/select2/select2_locale_fr.js') }}"></script>
+  <script src="{{ asset('bundles/oveprocedures/vakata-jstree/jstree.min.js') }}"></script>
+  <script src="{{ asset('bundles/oveprocedures/js/contact.js') }}"></script>
+
+  <script>
+    var domaine       = {{ domaine       | raw }};
+    var domaines_json = {{ domaines_json | raw }};
+  </script>
+
+{% endblock %}
+
+

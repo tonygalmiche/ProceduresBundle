@@ -1,0 +1,133 @@
+{% extends "OVEProceduresBundle:Default:base.html.twig" %}
+
+{% block stylesheets %}
+  {{ parent()}}
+  <link href="{{ asset('bundles/oveprocedures/css/procedures.css')  }}" rel="stylesheet" type="text/css" media="all" />
+
+  <link href="{{ asset('bundles/oveprocedures/css/procedures-print.css')  }}" rel="stylesheet" type="text/css" media="print" />
+{% endblock %}
+
+{% block content -%}
+  <div class="container no-print">
+    <div class="row">
+      <div class="col-sm-8 text-right" style="float: right">
+
+        {% if droits.revision == true %}
+          <a class="btn btn-sm btn-default" href="{{ path('procedures_revision', { id: entity.id }) }}">Nouvelle révision</a>
+        {% endif %}
+
+        {% if droits.revision == true %}
+          <a class="btn btn-sm btn-default" href="{{ path('procedures_etat', { etat: 'archive', id: entity.id }) }}" onclick="return confirm ('Voulez-vous vraiment archiver cette procédure ?')"  >vers Archivé</a>
+        {% endif %}
+
+
+        {% if droits.vers_redaction == true %}
+          <a class="btn btn-sm btn-default" href="{{ path('procedures_etat', { etat: 'redaction', id: entity.id }) }}">vers Rédaction</a>
+        {% endif %}
+
+        {% if droits.vers_approbation == true %}
+          <a class="btn btn-sm btn-primary" href="{{ path('procedures_etat', { etat: 'approbation', id: entity.id }) }}">vers Approbation</a>
+        {% endif %}
+
+        {% if droits.vers_verification == true and etat != 'Validé' %}
+          <a class="btn btn-sm btn-primary" href="{{ path('procedures_etat', { etat: 'verification', id: entity.id }) }}">vers Vérification</a>
+        {% endif %}
+        {% if droits.vers_verification == true and etat == 'Validé' %}
+          <a class="btn btn-sm btn-default" href="{{ path('procedures_etat', { etat: 'verification', id: entity.id }) }}">vers Vérification</a>
+        {% endif %}
+
+
+        {% if droits.vers_valide == true %}
+          <a class="btn btn-sm btn-primary" href="{{ path('procedures_etat', { etat: 'valide', id: entity.id }) }}">vers Validé</a>
+        {% endif %}
+
+        {% if droits.lecteur == true %}
+          <a class="btn btn-sm btn-danger" href="{{ path('procedures_lecteur', { id: entity.id }) }}">Accusé de réception</a>
+        {% endif %}
+
+
+        <span class="btn btn-sm btn-default" style="background-color:{{etat_color}};color:white;cursor:default">{{etat}}</span>
+
+        <a class="btn btn-sm btn-default " href="#" onclick="window.print()" ><span class="glyphicon glyphicon-print"></span> </a>
+
+
+      </div>
+
+
+
+      <div class="col-md-3 text-left" >
+        <a class="btn btn-default" title="Retour à la liste sans sauvegarder" href="{{ path('procedures') }}">Retour à la liste</a>
+
+
+        {% if droits.modifier == true %}
+          <a class="btn btn-default" title="Modifier" href="{{ path('procedures_edit', { id: entity.id }) }}">Modifier</a>
+        {% endif %}
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+  {% include "OVEProceduresBundle:procedures:show-procedure.html.twig" %}
+
+
+
+  <div class="container no-print">
+    <div class="row">
+      <div class="col-md-12 procedure">
+
+        <h1 class="redacteurs">Rédacteurs, Vérificateurs, Approbateurs et Lecteurs</h1>
+        <table width="100%" style="border-style:solid;border-width:1px;margin-top:10px">
+          <thead>
+            <tr>
+              <th width="25%" style="border-style:solid;border-width:1px">Rédacteurs</th>
+              <th width="25%" style="border-style:solid;border-width:1px">Vérificateurs</th>
+              <th width="25%" style="border-style:solid;border-width:1px">Approbateurs</th>
+              <th width="25%" style="border-style:solid;border-width:1px">Lecteurs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border-style:solid;border-width:1px">
+                <ul>
+                  {{redacteurs | raw }}
+                </ul>
+              </td>
+              <td style="border-style:solid;border-width:1px">
+                <ul>
+                {% for verificateur in verificateurs %}
+                  <li>{{verificateur}}</li>
+                {% endfor %}
+                </ul>
+              </td>
+              <td style="border-style:solid;border-width:1px">
+                <ul>
+                {% for approbateur in approbateurs %}
+                  <li>{{approbateur}}</li>
+                {% endfor %}
+                </ul>
+              </td>
+              <td style="border-style:solid;border-width:1px">
+                <ul>
+                {% for lecteur in lecteurs %}
+                  {% if lecteur.title!="" %}
+                    <li>{{lecteur.title}}</li>
+                  {% endif %}
+                {% endfor %}
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}

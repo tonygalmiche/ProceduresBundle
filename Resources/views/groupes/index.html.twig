@@ -1,0 +1,28 @@
+{% extends "OVEProceduresBundle:Default:base.html.twig" %}
+
+{% block content -%}
+  <h1>Gestion des groupes</h1>
+  <table style="width:100%" class="records_list">
+      <thead>
+          <tr>
+              <th>Id</th>
+              <th>Nom</th>
+              <th>Membres</th>
+              <th>Createur</th>
+              <th>Actions</th>
+          </tr>
+      </thead>
+      <tbody>
+      {% for entity in entities %}
+          <tr>
+              <td style="text-align:center"><a href="{{ path('groupes_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+              <td style="text-align:left">{{ entity.nom }}</td>
+              <td style="text-align:left">{{ entity.membres }}</td>
+              <td style="text-align:center">{{ entity.createur }}</td>
+              <td style="text-align:center"><a href="{{ path('groupes_edit',   { 'id': entity.id }) }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+  <a type="button" class="btn btn-sm btn-default" href="{{ path('groupes_new') }}"><span class="glyphicon glyphicon-plus"></span> Nouveau groupe</a>
+{% endblock %}

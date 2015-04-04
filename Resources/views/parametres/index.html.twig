@@ -1,0 +1,61 @@
+{% extends "OVEProceduresBundle:Default:base.html.twig" %}
+
+{% block content -%}
+    <h1>Paramètres</h1>
+
+    <table class="records_list" style="width:50%">
+        <thead>
+            <tr>
+                <th style="width:40%">Paramètre</th>
+                <th style="width:60%">Valeur</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td style="text-align:left"><a href="{{ path('parametres_edit', { 'id': entity.id }) }}">{{ entity.intitule }}</a></td>
+                <td>{{ entity.valeur }}</td>
+             </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+  
+  <h1>Trame</h1>
+  <form action="upload" method="post" enctype="multipart/form-data" role="form" style="width:50%">
+    <div class="form-group">
+      <label for="upload">Télécharger une nouvelle trame</label>
+      <input type="file" name="trame" />
+    </div>
+    <button type="submit" class="btn btn-primary">Télécharger</button>
+  </form>
+
+  <ul>
+    {% for trame in trames %}
+    <li><a href="/uploads/manuel/{{trame}}">{{trame}}</a></li>
+    {% endfor %}
+  </ul>
+
+
+  <h1>Signature</h1>
+  <img style="width:150px" src="/uploads/manuel/signature.png" alt="">
+  <form action="uploadsignature" method="post" enctype="multipart/form-data" role="form" style="width:50%">
+    <div class="form-group">
+      <label for="upload">Télécharger une nouvelle image de signature</label>
+      <input type="file" name="signature" />
+    </div>
+    <button type="submit" class="btn btn-primary">Télécharger</button>
+
+
+
+
+  </form>
+
+
+
+  
+
+
+{% endblock %}

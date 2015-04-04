@@ -1,0 +1,226 @@
+
+
+
+.filigrane{
+  display:none;
+}
+
+
+.navbar {
+    min-height: 30px;
+    height: 30px;
+}
+
+
+.navbar-nav > li > a {
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.navbar-nav > li > a {
+    line-height: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+
+.container-fluid {
+  /*background-color:BurlyWood;*/
+}
+
+
+.procedure {
+  font-size:11pt;
+}
+
+
+
+
+.procedure h1, .cke_editable h1 {
+  font-size:14pt;
+  font-weight: bold;
+  margin-top:30px;
+  margin-bottom:10px;
+  /*background-color:Beige ;*/
+  color: black;
+}
+
+.procedure h2, .cke_editable h2 {
+  font-size:13pt;
+  font-weight: bold;
+  /*background-color:white;*/
+}
+
+.procedure h3, .cke_editable h3 {
+  font-size:12pt;
+}
+
+.procedure h4, .cke_editable h4 {
+  font-size:11pt;
+  font-weight: normal;
+  margin:0.5em;
+  margin-left:10mm;
+
+}
+
+.procedure h5, .cke_editable h5 {
+  font-size:11pt;
+  font-weight: normal;
+  margin:0.5em;
+  margin-left:20mm;
+}
+
+.procedure h6, .cke_editable h6 {
+  font-size:11pt;
+  font-weight: normal;
+  margin:0.5em;
+  margin-left:30mm;
+}
+
+
+.procedure h4:before, .cke_editable h4:before {
+  content: "□ "; 
+}
+
+.procedure h5:before, .cke_editable h5:before {
+  content: "● "; 
+}
+
+.procedure h6:before, .cke_editable h6:before {
+  content: "■ "; 
+}
+
+
+
+.procedure ul,.cke_editable ul {
+  list-style-type: none
+}
+
+
+.procedure ul li:before, .cke_editable ul li:before {
+    content: "□ "; 
+}
+
+
+.procedure ul li li:before, .cke_editable ul li li:before {
+    content: "● "; 
+}
+
+.procedure ul li li li:before, .cke_editable ul li li li:before {
+    content: "■ "; 
+}
+
+.procedure ul li li li li:before, .cke_editable ul li li li li:before {
+    content: "- "; 
+}
+
+
+
+
+
+
+
+.procedure table {
+  border-collapse: collapse;
+}
+
+
+
+
+
+
+
+.procedure table th {
+    background-color:transparent;
+    border: 2px solid #747c8a;
+    color: black;
+    padding: 0.1em;
+    text-align: center;
+}
+
+
+#content table th {
+    padding: 0.1em;
+}
+
+
+
+
+#content .procedure table tbody td {
+    background-color:transparent;
+    border-bottom: 2px solid #747c8a;
+    border-left: 2px solid #747c8a;
+    border-right: 2px solid #747c8a;
+    border-top: 2px solid #747c8a;
+    padding: 0.1em;
+}
+
+
+
+.procedure table td:last-child, table th:last-child {
+    padding: 0.1em;
+}
+
+
+
+.procedure .redacteurs{
+  background-color:transparent;
+  /*font-size:22px;*/
+  border-top: 3px solid #D8D8D8;
+  padding-top:0.1em;
+}
+
+
+
+
+
+body {
+  /*background-color:red;*/
+  margin: 5px;
+  padding-top: 30px;
+}
+
+
+h1 {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+
+
+
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+}
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  font-size: 200px;
+  direction: ltr;
+  cursor: pointer;
+}
+
+.progress {
+  height: 20px;
+}
+
+
+#content table tbody td {
+    border-bottom: 1px solid grey;
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+    border-top: 1px solid grey;
+    padding: 0.1em;
+}
+
+#content table td:last-child, table th:last-child {
+    text-align: left;
+}
+
+
+
+

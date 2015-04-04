@@ -1,0 +1,144 @@
+{% extends "OVEProceduresBundle:Default:base.html.twig" %}
+
+
+
+{% block stylesheets %}
+  {{ parent()}}
+  <link href="{{ asset('bundles/oveprocedures/css/procedures.css')  }}" rel="stylesheet" type="text/css" media="screen" />
+
+  <link rel="alternate" type="application/atom+xml" title="Les procédures en attente de vérification" href="{{ url('procedures_rss', {'etat': 'verification'}) }}" />
+  <link rel="alternate" type="application/atom+xml" title="Les procédures en attente d'approbation"   href="{{ url('procedures_rss', {'etat': 'approbation'}) }}" />
+  <link rel="alternate" type="application/atom+xml" title="Les dernières procédures validées"         href="{{ url('procedures_rss', {'etat': 'valide'}) }}" />
+{% endblock %}
+
+
+
+
+
+{% block content -%}
+
+
+  <div class="container-fluid">
+
+
+    <div class="row">
+      <div class="col-md-6 text-right" style="float: right">
+        {% if droits.admin == true %}
+          <a href="../manuel/html">Générer le manuel</a> - 
+        {% endif %}
+        <a href="/uploads/manuel/manuel.html" target="_blank">HTML</a> - 
+        <a href="/uploads/manuel/manuel.odt" target="_blank">ODT</a> - 
+        <a href="/uploads/manuel/manuel.pdf" target="_blank">PDF</a>
+      </div>
+      <div class="col-md-6 text-left" >
+        <h1>Manuel de procédures</h1>
+      </div>
+    </div>
+
+
+    <form class="form-inline" role="form">
+
+      {% if alertes.procedures_a_verifier>0 %}
+        <a class="btn btn-danger" type="button" href="{{ path('procedures', { 'filtre': 'procedures_a_verifier' }) }}">
+          <span class="glyphicon glyphicon-exclamation-sign"></span> {{alertes.procedures_a_verifier}} procédure(s) à vérifier
+        </a>
+      {% endif %}
+
+      {% if alertes.procedures_a_approuver>0 %}
+        <a class="btn btn-danger" type="button" href="{{ path('procedures', { 'filtre': 'procedures_a_approuver' }) }}">
+          <span class="glyphicon glyphicon-exclamation-sign"></span> {{alertes.procedures_a_approuver}} procédure(s) à approuver
+        </a>
+      {% endif %}
+
+      {% if alertes.procedures_a_lire>0 %}
+        <a class="btn btn-warning" type="button" href="{{ path('procedures', { 'filtre': 'procedures_a_lire' }) }}">
+          <span class="glyphicon glyphicon-eye-open"></span> {{alertes.procedures_a_lire}} procédure(s) à lire
+        </a>
+      {% endif %}
+      {% if alertes.nouvelles_procedures>0 %}
+        <a class="btn btn-info" type="button" href="{{ path('procedures', { 'filtre': 'nouvelles_procedures' }) }}">
+          <span class="glyphicon glyphicon-info-sign"></span> {{alertes.nouvelles_procedures}} nouvelle(s) procédure(s)
+        </a>
+      {% endif %}
+      </p>
+
+      <div class="form-group">
+        <input class="form-control" name="domaine" placeholder="Domaine"     value="{{f.domaine}}">
+      </div>
+
+      <div class="form-group">
+        <input class="form-control" name="fiche"   placeholder="N°Fiche"      value="{{f.fiche}}">
+      </div>
+
+      <div class="form-group">
+        <input class="form-control" name="nom"   placeholder="Nom Fiche"      value="{{f.nom}}">
+      </div>
+
+      <div class="form-group">
+        <input class="form-control" name="mots_cles" placeholder="Mots clés" value="{{f.mots_cles}}">
+      </div>
+
+      <div class="form-group">
+        <select name="etat" class="form-control"  {% if droits.minimum == true %} disabled="disabled" {% endif %} >
+          {% for etat in etats %}
+            <option value="{{etat.id}}" {{etat.selected}}>{{etat.title}}</option> 
+          {% endfor %}
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-default">OK</button>
+    </form>
+  </div></p>
+
+
+
+    <table  width="100%" class="records_list">
+        <thead>
+            <tr>
+                <th>Domaine</th>
+                <th>N°Fiche</th>
+                <th>Nom Fiche</th>
+                <th>Version</th>
+                <th>Mots clés</th>
+                <th>Date application</th>
+                <th>État</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td style="text-align:left">{{ entity.domaine | raw }}</td>
+                <td style="text-align:center"><a href="{{ path('procedures_show', { 'id': entity.id }) }}">{{ entity.fiche }}</a></td>
+                <td style="text-align:left"><a href="{{ path('procedures_show', { 'id': entity.id }) }}">{{ entity.nom }}</a></td>
+                <td style="text-align:center">{{ entity.version }}</td>
+                <td style="text-align:left">{{ entity.motscles | raw}}</td>
+                 <td style="text-align:center">{% if entity.dateapplication %}{{ entity.dateapplication|date('d/m/Y') }}{% endif %}</td>
+                <td style="text-align:center;padding:0.2em"><div style="color:white;background-color:{{entity.etat_color}}">{{ entity.etat }}</div></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if droits.minimum == false %}
+    <a href="{{ path('procedures_rss', { 'etat': 'valide' }) }}" class="btn primary">
+      <img src="{{ asset('bundles/oveprocedures/images/rss.png') }}" alt="RSS" />Procédures validées
+    </a>
+    {% endif %}
+
+    {% if alertes.procedures_a_verifier>0 %}
+    <a href="{{ path('procedures_rss', { 'etat': 'verification' }) }}" class="btn primary">
+      <img src="{{ asset('bundles/oveprocedures/images/rss.png') }}" alt="RSS" />Procédures en attente de vérification 
+    </a>
+    {% endif %}
+    {% if alertes.procedures_a_approuver>0 %}
+    <a href="{{ path('procedures_rss', { 'etat': 'approbation' }) }}" class="btn primary">
+      <img src="{{ asset('bundles/oveprocedures/images/rss.png') }}" alt="RSS" />Procédures en attente d'approbation
+    </a>
+    {% endif %}
+    </p>
+
+    {% if droits.minimum == false %}
+      <a type="button" class="btn btn-sm btn-default" href="{{ path('procedures_new') }}"><span class="glyphicon glyphicon-plus"></span> Ajouter une nouvelle fiche</a>
+    {% endif %}
+
+    {% endblock %}

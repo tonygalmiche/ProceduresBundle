@@ -1,0 +1,163 @@
+  <div class="container">
+    <div class="filigrane" style="color:{{filigrane_couleur}};border-color:{{filigrane_couleur}};margin-top:{{filigrane_top}}cm;margin-left:{{filigrane_left}}cm;">{{filigrane|raw}}</div>
+    <div class="row">
+      <div class="col-md-12 procedure">
+        <table width="100%" style="width:100%;border-style:solid;border-width:2px;margin-top:10px">
+          <tr>
+            <td style="background-color:#D8D8D8;border-style:solid;border-width:2px;text-align:center;padding:1pt">
+              <img  style="width:1.8cm;height:1.1cm" src="{{ url }}/{{ asset('bundles/oveprocedures/images/ove-fondation.png')  }}" alt="OVE FONDATION" />
+            </td>
+            <td style="background-color:transparent;border-style:solid;border-width:2px;text-align:center;padding:1pt;font-size:9pt" colspan="2">Cette fiche est la propriété d'OVE et ne peut être reproduite ni diffusée sans autorisation.</td>
+          </tr>
+          <tr>
+            <td style="border-style:solid;border-width:2px;text-align:left;padding:1pt">Domaine</td>
+            <td style="background-color:transparent;border-style:solid;border-width:2px;text-align:left;padding:1pt;font-size:13pt;font-weight: bold">{{ entity.domaine|raw }}</td>
+            <td style="background-color:transparent;border-style:solid;border-width:2px;text-align:left;padding:1pt;font-size:13pt;font-weight: bold;white-space:nowrap;">Fiche n°{{ entity.fiche|raw }}</td>
+          </tr>
+
+          <tr>
+            <td style="border-style:solid;border-width:2px;text-align:left;padding:1pt">Nom</td>
+            <td style="background-color:transparent;border-style:solid;border-width:2px;text-align:left;padding:1pt;font-size:13pt;font-weight: bold;">{{ entity.fiche|raw }} - {{ entity.nom }}</td>
+            <td style="background-color:transparent;border-style:solid;border-width:2px;text-align:left;padding:1pt;font-size:13pt;font-weight: bold;white-space:nowrap;">Version n°{{ entity.version|raw }}</td>
+          </tr>
+        </table>
+
+        {% if entity.type =='procedure' %}
+          <h1>1. OBJET DE LA PROCÉDURE</h1>
+        {% else %}
+          <h1>1. OBJET DE LA RÈGLE DE GESTION</h1>
+        {% endif %}
+
+        {{ entity.objet|raw }}
+
+        <h1>2. TERMINOLOGIE</h1>
+        {{ entity.terminologie|raw }}
+
+        <h1>3. INTERVENANTS ET SERVICES CONCERNÉS</h1>
+        {{ entity.getIntervenantsHTML|raw }}
+
+        <p style="page-break-before: always">
+        {% if entity.type =='procedure' %}
+        <h1>4. LOGIGRAMME</h1>
+        {% if diagramme !="" %}
+          <div class="row">
+            <div class="col-lg-12" style="text-align:center">
+                <a title="Télécharger le logigramme" target="download" href="{{diagramme}}">
+                  {% if diagramme_width !="" %}
+                    <img style="width:{{p.diagramme_width}}cm;height:{{p.diagramme_height}}cm" src="{{p.diagramme}}" />
+                  {% else %}
+                    <img  style="max-width:100%;border-style:solid;border-width:1px" src="{{diagramme}}" alt="Pas de logigramme" />
+                  {% endif %}
+                </a>
+            </div>
+          </div>
+          {% endif %}
+          <p style="page-break-before: always">
+        {% endif %}
+
+        {% if entity.type =='procedure' %}
+          <h1>5. DESCRIPTION DES TACHES</h1>
+        {% else %}
+          <h1>4. DESCRIPTION DES TACHES</h1>
+        {% endif %}
+        {{ entity.description|raw }}
+
+
+        <p style="page-break-before: always">
+
+        {% if entity.type =='procedure' %}<h1>6. DOCUMENTS UTILISÉS</h1>{% else %}<h1>5. DOCUMENTS UTILISÉS</h1>{% endif %}
+
+        {% if entity.type =='procedure' %}<h2>6.1 Documentation</h2>{% else %}<h2>5.1 Documentation</h2>{% endif %}
+        <ul>
+        {% for pj in pieces_jointes %}
+          <li><a title="Télécharger {{pj}}" target="download" href="/uploads/attachments/{{entity.id}}-pieces-jointes/originals/{{pj}}">{{pj}}</a>
+        {% endfor %}
+        </ul>
+
+        {% if entity.type =='procedure' %}<h2>6.2 Modèles</h2>{% else %}<h2>5.2 Modèles</h2>{% endif %}
+        <ul>
+        {% for pj in modeles %}
+          <li><a title="Télécharger {{pj}}" target="download" href="/uploads/attachments/{{entity.id}}-modeles/originals/{{pj}}">{{pj}}</a>
+        {% endfor %}
+        </ul>
+
+        <ul>
+        {% for lien in liens_html %}
+          <li><a target="_blank" href="{{lien}}">{{lien}}</a>
+        {% endfor %}
+        </ul>
+
+        <p>&nbsp;</p>
+          <table width="100%" style="border-style:solid;border-width:1px">
+          <tbody>
+            <tr>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">Rédigé</td>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">
+                {% if entity.dateredaction %}
+                  Le {{ entity.dateredaction|date('d/m/Y') }}
+                {% endif %}
+              </td>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">
+                {% if entity.dateredaction %}
+                  <b>Par {{ entity.nomRedaction }}</b>
+                {% endif %}
+              </td>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">
+                Visa : {% if entity.dateredaction %}<img  style="width:1cm;height:1cm" src="{{ url }}/uploads/manuel/signature.png" alt="">{% endif %}
+              </td>
+            </tr>
+
+            <tr>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">Vérifié</td>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">
+                {% if entity.dateVerifie %}
+                  Le {{ entity.dateVerifie|date('d/m/Y') }}
+                {% endif %}
+              </td>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">
+                {% if entity.dateVerifie %}
+                  <b>Par {{ entity.nomVerifie }}</b>
+                {% endif %}
+              </td>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">
+                Visa : {% if entity.dateVerifie %}<img style="width:1cm;height:1cm" src="{{ url }}/uploads/manuel/signature.png" alt="">{% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">Approuvé</td>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">
+                {% if entity.dateApprouve %}
+                  Le {{ entity.dateApprouve|date('d/m/Y') }}
+                {% endif %}
+
+              </td>
+              <td style="border-style:solid;border-width:1px;padding:1pt">
+                {% if entity.dateApprouve %}
+                  <b>Par {{ entity.nomApprouve }}</b>
+                {% endif %}
+
+              </td>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">
+                Visa : {% if entity.dateApprouve %}<img style="width:1cm;height:1cm" src="{{ url }}/uploads/manuel/signature.png" alt="">{% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">Date d'application initiale</td>
+              <td style="width:25%;border-style:solid;border-width:1px;padding:1pt">
+                {% if entity.dateApplication %}
+                  Le {{ entity.dateApplication|date('d/m/Y') }}
+                {% endif %}
+              </td>
+              <td style="width:25%;background-color:#CCCCCC;border-style:solid;border-width:1px;padding:1pt">Date de mise à jour</td>
+              <td style="width:25%;background-color:#CCCCCC;border-style:solid;border-width:1px;padding:1pt"> {% if entity.dateMiseAJour %}Le {{ entity.dateMiseAJour|date('d/m/Y') }}{% endif %}</td>
+            </tr>
+            <tr>
+              <td style="width:25%;background-color:#CCCCCC;border-style:solid;border-width:1px;padding:1pt">Objet mise à jour</td>
+              <td style="width:75%;background-color:#CCCCCC;border-style:solid;border-width:1px;padding:1pt" colspan="3"><b>{{ entity.objetModification |raw }}<b></td>
+            </tr>
+          </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+

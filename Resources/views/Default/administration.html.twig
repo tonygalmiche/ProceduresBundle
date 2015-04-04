@@ -1,0 +1,28 @@
+{% extends "OVEProceduresBundle:Default:base.html.twig" %}
+
+
+{% block content %}
+  <h1>Administration du manuel des procédures</h1>
+
+  <ul class="list">
+
+    <li><a href="{{ path('association')}}">Associations</a></li>
+    <li><a href="{{ path('role')}}">Rôles</a></li>
+    <li><a href="{{ path('utilisateur')}}">Utilisateurs</a></li>
+    <li><a href="{{ path('role-utilisateur')}}">Affectation des rôles aux utilisateurs</a></li>
+
+
+    <!--<li><a href="{{ path('trames')}}">Gestion des trames</a></li>-->
+
+    <li><a href="{{ path('parametres')}}">Paramètres</a></li>
+
+    <li><a href="{{ path('parametresauth')}}">Paramètres d'authentification</a></li>
+
+    <li><a href="{{ path('domaines')}}">Gestion des vérificateurs par domaine</a></li>
+
+    <li><a href="{{ path('statistiques')}}">Consultation des statistiques</a></li> 
+  </ul>
+
+
+{% endblock %}
+

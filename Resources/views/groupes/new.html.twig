@@ -1,0 +1,8 @@
+{% extends "OVEProceduresBundle:Default:base.html.twig" %}
+
+{% block content -%}
+    <h1>Création groupe</h1>
+    {{ form(form) }}
+
+    </p><a type="button" class="btn btn-sm btn-default" href="{{ path('groupes') }}"><span class="glyphicon glyphicon-plus"></span> Retour à la liste</a>
+{% endblock %}
