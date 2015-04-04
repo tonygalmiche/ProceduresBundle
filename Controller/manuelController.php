@@ -248,7 +248,9 @@ class manuelController extends Controller
       $user = $this->getUser();
       $login = $user->getUserName(); //login
       $from  = $login."@ove.asso.fr";
-      $body=$this->renderView("OVEProceduresBundle:manuel:mail_manuel.html.twig");
+
+      $url="https://".$_SERVER["HTTP_HOST"];
+      $body=$this->renderView("OVEProceduresBundle:manuel:mail_manuel.html.twig", array('url' => $url));
 
       $cc=array("tony.galmiche@gmail.com","anneclaire.duchon@fondation-ove.fr","bastien.gonzalez@fondation-ove.fr");
 
