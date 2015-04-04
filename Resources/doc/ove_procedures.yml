@@ -1,0 +1,5 @@
+parameters:
+    thesaurus:
+        domaine : https://thesaurus.fondation-ove.fr/webservice/thesaurus/3    # URL du webservice pour accèder au thésaurus des domaines
+        mot_cle : https://thesaurus.fondation-ove.fr/webservice/thesaurus/1    # URL du webservice pour accèder au thésaurus des mots clés
+
