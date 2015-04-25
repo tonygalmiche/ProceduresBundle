@@ -29,7 +29,7 @@ $(function () {
 
 
 
-  plugins= ["dnd", "search", "unique"];
+  plugins= ["dnd", "search", "unique","sort"];
 
   //Doc : http://www.jstree.com/
   $('#jstree').jstree({

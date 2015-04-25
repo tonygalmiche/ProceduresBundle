@@ -118,8 +118,8 @@ config.toolbar_Full =
                 'valide'       => "Validé",
                 'archive'      => "Archivé",
             )))
-            ->add('domaine')
-            ->add('domaineid')
+            ->add('domaine'  , 'text', array('required' => true))
+            ->add('domaineid', 'text', array('required' => true))
             ->add('nom')
             ->add('fiche')
             ->add('version')

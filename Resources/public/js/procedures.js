@@ -1,8 +1,24 @@
 
 
 
+
+
+
+
+
 $(function () {
   var select_domaines=[];
+
+  //** Efface les valeurs par défaut lors de la création d'une fiche **********
+  if($("#ove_proceduresbundle_procedures_fiche").val()==" ") {
+      $("#ove_proceduresbundle_procedures_fiche").val("");
+  }
+  if($("#ove_proceduresbundle_procedures_nom").val()==" ") {
+      $("#ove_proceduresbundle_procedures_nom").val("");
+  }
+  //***************************************************************************
+
+
 
   $('.date').datepicker({ dateFormat: 'dd/mm/yy' });
 
@@ -53,7 +69,7 @@ $(function () {
 
 
   //Doc : http://www.jstree.com/
-  plugins= ["dnd", "search", "unique"];
+  plugins= ["dnd", "search", "unique","sort"];
   var jstree=$('#jstree').jstree({
     "plugins" : plugins,
     'core' : {

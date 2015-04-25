@@ -348,7 +348,8 @@ class proceduresController extends Controller
 
 
         $p = new Procedures;
-        $p->setFiche("Nouveau");
+        $p->setFiche(" ");
+        $p->setNom(" ");
         $p->setEtat("redaction");
         $em = $this->getDoctrine()->getManager();
         $em->persist($p);
