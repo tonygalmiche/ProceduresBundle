@@ -97,11 +97,21 @@ class proceduresController extends Controller
      */
     public function indexAction()
     {
+
         $em = $this->getDoctrine()->getManager();
+
 
         $user = $this->getUser();
         $login = $user->getUserName();
         $roles=$user->getRoles();
+
+
+        //$ldap = new ldap($em);
+        //echo $ldap->getMail("toto")."<br>\n";
+        //echo $ldap->getMail($login)."<br>\n";
+
+
+
 
         //print_r($roles);
 
@@ -211,10 +221,14 @@ class proceduresController extends Controller
           if(array_key_exists($type, $types)) $type=$types[$type];
 
 
+          //Lors de la creation d'une fiche, celle-ci est sauvegardée sans numéro mais du coup, il n'est plus possible d'y accèder pour la supprimer
+          $fiche=$v->getFiche();
+          if($fiche==" ") $fiche="Nouveau";
+
           $results[]=array(
             "id"                 => $v->getId(),
             "initid"             => $v->getInitid(),
-            "fiche"              => $v->getFiche(),
+            "fiche"              => $fiche,
             "nom"                => $v->getNom(),
             "type"               => $type,
             "etat"               => $etat,
@@ -1146,7 +1160,11 @@ class proceduresController extends Controller
         //** Sauvegarde de l'intitulé des Rédacteurs ****************
         $ids=$entity->getRedacteursid();
         if($ids<>"") $ids=explode(",", $ids); else $ids=array();
-        if(!in_array ($login, $ids)) $ids[]=$login; //Ajout de la personne qui éffectue la modification
+        if($login!="admin") {
+          if(!in_array ($login, $ids)) {
+            $ids[]=$login; //Ajout de la personne qui éffectue la modification
+          }
+        }
         $x=array();
         $ldap = new ldap($em);
         foreach($ids as $v) {
@@ -1290,6 +1308,13 @@ class proceduresController extends Controller
       $login = $user->getUserName(); //login
       if(method_exists ($user, "getName" )) $name = $user->getName(); else $name=$login;
 
+
+      $ldap = new ldap($em);
+        //echo $ldap->getMail($login)."<br>\n";
+
+
+
+
       //** Envoi des mails ********************************
       // Doc : http://swiftmailer.org/docs/messages.html
       if($etat=="verification") {
@@ -1300,7 +1325,7 @@ class proceduresController extends Controller
         if($Verificateursid!="") $tab=explode("\n",$Verificateursid);
         $to=array();
         foreach($tab as $v) {
-          $to[]=$v."@fondation-ove.fr";
+          $to[]=$ldap->getMail($v);
         }
         $sujet = "Une procédure ou règle de gestion n°".$entity->getFiche()." intitulée '".$entity->getNom()."' est en attente de vérification";
         //$sujet=$sujet."( ".implode(",",$to).")";
@@ -1339,7 +1364,8 @@ class proceduresController extends Controller
         if($lecteurs!="") $tab=explode(",",$lecteurs);
         $to=array();
         foreach($tab as $v) {
-          $to[]=$v."@ove.asso.fr";
+          //$to[]=$v."@fondation-ove.fr";
+          $to[]=$ldap->getMail($v);
         }
 
         //$sujet = "[Procédure][Lecture] ".$entity->getFiche();
@@ -1408,13 +1434,17 @@ class proceduresController extends Controller
 
     private function sendMail($sujet, $to, $layout, $entity, $etat) {
 
+      $em = $this->getDoctrine()->getManager();
+      $ldap = new ldap($em);
+
       //print_r($_SERVER);
       //[HTTP_HOST] => procedures-demo.fondation-ove.fr
       //[SCRIPT_NAME] => /app_dev.php
       $url="https://".$_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"]."/procedures/".$entity->getId();
       $user = $this->getUser();
       $login = $user->getUserName(); //login
-      $from  = $login."@ove.asso.fr";
+      //$from  = $login."@fondation-ove.fr";
+      $from  = $ldap->getMail($login);
       $body=$this->renderView("OVEProceduresBundle:procedures:$layout", array("entity"=>$entity,"url"=>$url)
       );
 
@@ -1454,6 +1484,7 @@ class proceduresController extends Controller
 
     private function role2mail($role) {
       $em = $this->getDoctrine()->getManager();
+      $ldap = new ldap($em);
       $SQL="SELECT r.id, ru.utilisateur_id, u.login
             FROM role r, role_utilisateur ru, utilisateur u
             WHERE r.id=ru.role_id and ru.utilisateur_id=u.id and  r.role='$role' ";
@@ -1462,7 +1493,8 @@ class proceduresController extends Controller
       $entities=$req->fetchAll();
       $mails=array();
       foreach ($entities as $v) {
-        $mails[]=$v["login"]."@ove.asso.fr";
+        //$mails[]=$v["login"]."@fondation-ove.fr";
+        $mails[]=$ldap->getMail($v["login"]);
       }
       return $mails;
     }

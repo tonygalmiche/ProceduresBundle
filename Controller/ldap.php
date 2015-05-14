@@ -41,6 +41,28 @@ class ldap
       return $name;
     }
 
+
+
+    public function getMail($login) {
+      $mail="$login@fondation-ove.fr";
+      if($this->ress && $this->bind) {
+        $filter="uid=$login";
+        $justthese = array("ou", "sn", "givenname", "mail"); // givenName: Tony, sn: Galmiche
+        $search=ldap_search($this->ress, $this->dn, $filter, $justthese);
+        if ($search) {
+          $entries = ldap_get_entries($this->ress, $search);
+          if(array_key_exists(0,$entries)) {
+            $v=$entries[0];
+            $mail=$v["mail"][0];
+          }
+        }
+      }
+      return $mail;
+    }
+
+
+
+
     public function getNames($q) {
       $results=array();
       if($this->ress && $this->bind) {

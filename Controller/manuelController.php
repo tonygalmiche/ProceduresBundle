@@ -237,22 +237,27 @@ class manuelController extends Controller
 
 
     private function sendMail() {
+
       $em = $this->getDoctrine()->getManager();
+      $ldap = new ldap($em);
+
       $repository=$em->getRepository('OVEProceduresBundle:parametres');
       $obj = $repository->findOneBy(array('code' => 'mail_manuel'));
-      $to=array("tony.galmiche.div@free.fr");
+      $to=array();
       if(is_object($obj)) {
         $to=explode("\r\n",$obj->getValeur());
       }
       $sujet = "[Manuel]Nouvelle version";
       $user = $this->getUser();
       $login = $user->getUserName(); //login
-      $from  = $login."@ove.asso.fr";
+      $from  = $login."@fondation-ove.fr";
+      $from  = $ldap->getMail($login);
+
 
       $url="https://".$_SERVER["HTTP_HOST"];
       $body=$this->renderView("OVEProceduresBundle:manuel:mail_manuel.html.twig", array('url' => $url));
 
-      $cc=array("tony.galmiche@gmail.com","anneclaire.duchon@fondation-ove.fr","bastien.gonzalez@fondation-ove.fr");
+      $cc=array("anneclaire.duchon@fondation-ove.fr","bastien.gonzalez@fondation-ove.fr");
 
       $message = \Swift_Message::newInstance()
         ->setSubject($sujet)
